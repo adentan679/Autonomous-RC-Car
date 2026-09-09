@@ -196,6 +196,11 @@ The completed platform supported:
 
 ---
 
+## Code Availability
+
+The code and configuration files in this repository are reconstructed examples based on course instructions. They are not the original files used to operate the vehicle, as those files are no longer accessible on the Raspberry Pi. Example values may differ from the final settings used during testing and have not been validated on the vehicle.
+
+---
 ## Repository Structure
 
 ```text
