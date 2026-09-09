@@ -1,0 +1,8 @@
+# Reconstructed hardware-selection excerpt, not a full upstream config.
+
+oakd: 1
+vesc_without_odom: 1
+
+# No LiDAR was used.
+# In a full upstream config, disable unused sensor options using the
+# actual keys supported by that version; those keys are not reconstructed here.

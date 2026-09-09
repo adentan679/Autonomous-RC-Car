@@ -1,0 +1,38 @@
+# DOCUMENTATION WORKSHEET ONLY — not a loadable ROS2 parameter file.
+# Labels mirror the course GUI. Saved parameter names/nesting are unverified.
+# Numeric values are guide examples, NOT recovered final vehicle settings.
+# null means unknown/unrecovered; do not pass null values to ROS2.
+
+# HSV values shown in the guide's yellow-marker example.
+lowH: 25
+highH: 35
+lowS: 56
+highS: null
+lowV: 112
+highV: null
+
+# Noise-filter settings: final values were not recovered.
+erosion_iterations: null
+dilation_iterations: null
+gray_thresh: null
+
+# Contour-width starting values from the guide, in pixels.
+min_width: 15
+max_width: 200
+
+# The guide suggests 3–4 segments; final selection unknown.
+number_of_lines: null
+
+# Image cropping and tracking reference: final values unknown.
+frame_width: null
+rows_to_watch: null
+rows_offset: null
+
+# Adjusted during class to keep the car RIGHT of the yellow line.
+# Exact value and offset convention unknown.
+# This is not the VESC straight_steering servo calibration.
+camera_centerline: null
+
+# Final visual dead-band slider value unknown.
+# Do not assume its units match the guidance node's error_threshold.
+error_threshold: null
