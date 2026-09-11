@@ -2,7 +2,7 @@
 
 A Raspberry Pi–based autonomous RC car developed for **UCSD ECE/MAE 148** using machine learning, RTK GPS waypoint navigation, and ROS2 computer vision.
 
-![Autonomous RC Car](images/rc_car1.jpg)
+![Autonomous RC Car](images/rc_car3.jpg)
 
 ## Overview
 
@@ -51,7 +51,7 @@ VESC Motor Controller
         ↓
 Motor and Steering Servo
 ```
-**Video Link** : HERHEHEHHEEH
+**Video Link** : https://drive.google.com/file/d/1DY6aFR4yYwOp1_XDfjAPQdx2KsRoQQGD/view?usp=sharing
 
 ### 2. RTK GPS Waypoint Navigation
 
@@ -72,7 +72,8 @@ PID Controller
         ↓
 VESC Motor Controller
 ```
-**Video Link**: HERERERER
+**Video Link**: https://drive.google.com/file/d/1vV5Wc7ZmgLT2ehL8Jj9ARegPvt4CNCrq/view?usp=sharing
+
 
 
 ### 3. ROS2 Lane Following
@@ -182,46 +183,11 @@ Early autonomous tests produced unstable steering. PID gains, steering limits, a
 
 ---
 
-## Results
-
-The completed platform supported:
-
-- Manual wireless control
-- Camera and driving-data collection
-- TensorFlow model training and autonomous inference
-- RTK GPS waypoint recording and playback
-- ROS2 yellow-marker detection
-- PID-based steering and throttle control
-- VESC control of the motor and steering servo
-
----
-
 ## Code Availability
 
 The code and configuration files in this repository are reconstructed examples based on course instructions. They are not the original files used to operate the vehicle, as those files are no longer accessible on the Raspberry Pi. Example values may differ from the final settings used during testing and have not been validated on the vehicle.
 
 ---
-## Repository Structure
-
-```text
-autonomous-rc-car/
-├── README.md
-├── images/
-│   ├── rc-car.jpg
-│   └── hardware-diagram.png
-├── donkeycar/
-│   ├── myconfig.py
-│   └── patches/
-├── gps/
-│   ├── config/
-│   └── example-path.csv
-├── ros2/
-│   ├── nodes/
-│   ├── config/
-│   └── launch/
-└── docs/
-    └── troubleshooting.md
-```
 
 ## Course Information
 
