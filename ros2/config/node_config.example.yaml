@@ -1,0 +1,12 @@
+# Reconstructed excerpt from the ECE/MAE 148 course guide.
+# Merge into the matching upstream config; not a complete replacement.
+# Calibration-mode reference. These flags are NOT a safety interlock.
+
+all_components: 1
+camera_nav_calibration: 1
+sensor_visualization: 0
+camera_nav: 0
+
+# Course navigation mode (reference only):
+# camera_nav_calibration: 0
+# camera_nav: 1
