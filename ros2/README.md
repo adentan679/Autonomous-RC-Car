@@ -1,51 +1,70 @@
 # ROS2 Lane Following and Camera Calibration
 
-Developed for **UCSD ECE/MAE 148**, this project used a Raspberry Pi 5, OAK-D Lite camera, and VESC drivetrain to navigate a track while staying **to the right of the yellow lane markers**. The ROS2 software ran inside Docker.
+A camera-based autonomous driving system developed for **UCSD ECE/MAE 148**, using a Raspberry Pi 5, OAK-D Lite camera, and VESC drivetrain. The UCSD Robocar framework ran inside Docker and provided the ROS2 camera, lane-detection, guidance, and actuator software.
 
+Our task was to navigate the track while staying **to the right of the yellow lane markers**. No LiDAR was used.
 
-## My Calibration Work
+## My Contributions
 
-I adjusted the camera-processing and lane-tracking settings directly on the
-track to establish a useful visual reference for the guidance controller.
+My work focused on camera and lane-tracking calibration, hardware integration, and on-track testing. I used the calibration interface to observe the detection mask and lane overlays, then evaluated the car’s behavior during autonomous runs.
 
-- **HSV thresholds:** isolated yellow markers from the pavement and background.
-- **Erosion and dilation:** reduced small artifacts in the detection mask.
-- **Contour filtering:** adjusted marker-width limits and the number of segments considered.
-- **Image cropping:** focused processing on the relevant section of road.
-- **Centerline offset:** adjusted the tracking reference so the car stayed to the right of the yellow line.
-- **Error threshold:** adjusted the tolerance before steering corrections were applied.
-
-The goal was a clean mask with white marker regions on a black background,
-followed by a consistent detected marker position. I checked the calibration
-under actual track lighting and adjusted settings while observing the mask
-and lane-detection overlays.
+The course framework supplied the underlying software. This folder documents my configuration, calibration, and testing experience.
 
 ## How the System Worked
 
 | Stage | Function |
 | --- | --- |
 | Camera input | Published OAK-D Lite images to ROS2 |
-| HSV filtering | Selected pixels corresponding to yellow markers |
-| Contour processing | Selected marker regions and calculated a representative position |
-| Tracking reference | Compared the marker position with the calibrated reference |
-| Lane guidance | Used lane error for PID steering and throttle scheduling |
-| VESC interface | Converted control commands into motor and steering actuation |
+| HSV filtering | Isolated yellow marker pixels from the pavement and background |
+| Contour processing | Selected valid marker regions and calculated a representative image position |
+| Tracking reference | Compared the detected marker position with a calibrated image reference to calculate lane error |
+| Lane guidance | Used PID steering and error-based throttle scheduling |
+| VESC interface | Converted `/cmd_vel` commands into motor and steering-servo actuation |
 
-The centerline offset was part of the perception/tracking calibration. It
-was separate from the servo's straight-ahead calibration and the steering
-limits. The exact final offset and its numerical convention were not recovered.
+The tracking reference was adjusted so the car traveled to the right of the yellow markers rather than directly over them. This image reference was separate from the steering servo’s straight-ahead calibration and mechanical steering limits.
+
+PID control adjusted steering in response to lane error. Throttle scheduling reduced speed as the error increased, helping the car negotiate turns.
+
+## Camera and Lane Calibration
+
+The calibration interface provided the following controls:
+
+| Control | Purpose |
+| --- | --- |
+| HSV thresholds | Selected yellow marker pixels while excluding other colors and background regions |
+| Erosion and dilation | Removed small artifacts and adjusted marker regions in the binary mask |
+| Contour-width limits | Rejected regions that were too narrow or too wide to be useful markers |
+| Number of segments | Selected how many detected segments contributed to the representative marker position |
+| Image cropping | Selected the portion of the camera image analyzed for lane detection |
+| Camera centerline / tracking reference | Defined the reference position used to calculate lane error |
+| Error threshold | Established a dead band around the reference to reduce small steering corrections |
+
+The calibration goal was a clean mask showing white marker regions against a black background, followed by a stable detected marker position. Track testing was necessary to evaluate detection through curves as well as on straight sections.
+
+The exact final settings and the numerical convention used for the tracking offset were not retained.
+
+## Results and Observations
+
+The car ultimately demonstrated successful autonomous lane following after calibration and track testing.
+
+During earlier runs, we observed intermittent loss of lane-marker detection during turns, along with the car stopping partway through a turn. The exact cause of the stopping behavior and the specific parameter changes that resolved the issue were not retained.
+
+The final calibrated setup followed the track successfully. This experience emphasized the importance of evaluating camera coverage and lane detection throughout turns, where marker positions change within the image.
 
 ## Configuration Examples
 
-| File | Contents |
-| --- | --- |
-| [node_config.example.yaml](config/node_config.example.yaml) | Course calibration-mode selection excerpt |
-| [car_config.example.yaml](config/car_config.example.yaml) | OAK-D Lite and VESC selection excerpt |
-| [vision_calibration.example.yaml](config/vision_calibration.example.yaml) | Documentation of the GUI settings adjusted during calibration |
-| [ros_racer_calibration.example.yaml](config/ros_racer_calibration.example.yaml) | Course-reference PID and actuator settings |
+The YAML files in `config/` are reconstructed examples and documentation worksheets. They are not a complete, runnable copy of the vehicle’s ROS2 configuration.
+
+- **Node selection:** illustrates selection of calibration or autonomous navigation mode.
+- **Hardware selection:** illustrates enabling the OAK-D camera and VESC interface.
+- **Calibration documentation:** records relevant vision, guidance, or actuator settings where available.
+
+Consult each file’s comments for its scope and limitations. Course-reference values are starting examples, not recovered final vehicle settings. A value of `null` indicates an unknown or unrecovered setting and should not be loaded directly as a ROS2 parameter.
 
 ## Code Availability and Credits
 
-These examples were reconstructed from course instructions because the original Raspberry Pi files are unavailable. Numerical values are course references, not final vehicle calibration; `null` indicates an unrecovered value. The vision worksheet is documentation only, and the configuration examples have not been hardware-validated.
+The original Raspberry Pi files are no longer available. These examples were reconstructed from course instructions and have not been validated on the vehicle.
 
-The UCSD Robocar framework provided the camera, lane-detection, guidance, and actuator software. This folder documents my configuration and calibration work.
+The **UCSD Robocar framework** provided the camera drivers, lane-detection pipeline, guidance controller, and actuator interface. My contributions centered on hardware integration, configuration, calibration, and testing.
+
+This repository serves as a portfolio record of that work.

@@ -51,13 +51,26 @@ VESC Motor Controller
         ↓
 Motor and Steering Servo
 ```
+### DonkeyCar Results
+
+Initial autonomous tests showed poor track-following performance under changing daylight conditions. During cloudy sessions, intermittent sunlight altered the track’s appearance between training-data collection and testing. Our team identified this lighting mismatch as a likely contributor to the model’s inconsistent driving.
+
+To reduce lighting variation, we collected a new training dataset and tested the retrained model at night under consistent streetlamp lighting. **The car followed the track much more reliably when training and testing conditions were similar.**
+
+These results highlighted the importance of representative training data. Although nighttime testing improved performance, reliable operation across daylight, shadows, and nighttime conditions remained unverified. A future improvement would be to collect a larger, more diverse dataset covering these conditions and evaluate the model separately in each environment.
+
+
 **Video Link** : https://drive.google.com/file/d/1DY6aFR4yYwOp1_XDfjAPQdx2KsRoQQGD/view?usp=sharing
+
+
 
 ### 2. RTK GPS Waypoint Navigation
 
-The second system used a Point One Navigation GPS receiver with Polaris RTK corrections. RTK correction data provided more accurate positioning than standard GPS.
+The second system used a Point One Navigation GPS receiver with Polaris RTK corrections for improved positioning accuracy.
 
-A path was recorded while the car was manually driven around a course. During autonomous playback, the car compared its current position to the saved GPS waypoints and used PID control to generate steering corrections.
+Using DonkeyCar’s follow-path template, our team manually drove the car around a course and saved the GPS waypoints. During autonomous playback, the system compared the car’s live GPS position with the recorded path. A PID controller used the path error to generate steering corrections, which were sent to the VESC-controlled drivetrain to follow the route.
+
+We tuned the PID gains and reduced the vehicle’s speed through track testing, ultimately completing three autonomous GPS-guided laps.
 
 ```text
 Point One GPS + RTK Corrections
@@ -72,6 +85,16 @@ PID Controller
         ↓
 VESC Motor Controller
 ```
+### GPS Waypoint Navigation Results
+
+**The car successfully completed three autonomous GPS-guided laps after resolving a hardware issue and tuning the steering controller and vehicle speed.**
+
+Initially, the GPS coordinate display returned `NaN` values, preventing valid position recording. After rechecking the setup instructions without resolving the issue, our team swapped the GPS hardware with another group’s unit. The replacement restored valid coordinate readings, isolating the problem to our original GPS hardware.
+
+We began autonomous testing with **P = 0.15, D = 0.60, and I = 0.00**. The car responded too slowly during turns and drifted off the recorded path. Increasing P to **0.22** strengthened the steering response, but subsequent testing revealed excessive side-to-side oscillation. We then increased D to **0.68** to improve damping and reduced the VESC speed setting, keeping I at **0.00**.
+
+With these adjustments, the car completed three autonomous laps along the recorded GPS route. This process demonstrated the value of hardware substitution for fault isolation and iterative track testing to balance steering responsiveness, oscillation, and vehicle speed.
+
 **Video Link**: https://drive.google.com/file/d/1vV5Wc7ZmgLT2ehL8Jj9ARegPvt4CNCrq/view?usp=sharing
 
 
@@ -93,7 +116,7 @@ HSV Yellow-Marker Detection
         ↓
 Right-Side Lane Position Error
         ↓
-PID Controller
+Lane Guidance + PID Steering + Throttle Scheduling
         ↓
 ROS2 /cmd_vel
         ↓
@@ -101,6 +124,14 @@ VESC Motor Controller
         ↓
 Motor and Steering Servo
 ```
+
+### ROS2 Lane-Following Results
+
+The car ultimately demonstrated successful autonomous lane following after calibration and track testing.
+
+During earlier runs, we observed intermittent loss of lane-marker detection during turns, along with the car stopping partway through a turn. This highlighted the importance of camera positioning and visual calibration when tracking markers through curves.
+
+The final calibrated setup followed the track successfully. Although the exact parameter changes were not retained, the testing experience emphasized the need to evaluate lane detection through turns as well as on straight sections.
 
 **Video Link**: https://drive.google.com/file/d/1v_xSNbWWge-8-v76XIZwv80xZv-_OYFh/view?usp=sharing
 
