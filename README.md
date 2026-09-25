@@ -156,7 +156,7 @@ The final calibrated setup followed the track successfully. Although the exact p
 
 ## Hardware Architecture
 
-![Hardware and Power Diagram](images/hardware_diagram.jpg)
+![Hardware and Power Diagram](images/hardware_diagram.JPG)
 
 Battery power was separated between the high-power drivetrain and the lower-voltage electronics. The VESC powered and controlled the drive motor, while a DC-DC converter supplied regulated power to the Raspberry Pi. The Raspberry Pi communicated with the camera, GPS receiver, controller, and VESC through USB connections.
 
