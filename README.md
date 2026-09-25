@@ -72,19 +72,16 @@ Using DonkeyCar’s follow-path template, our team manually drove the car around
 
 We tuned the PID gains and reduced the vehicle’s speed through track testing, ultimately completing three autonomous GPS-guided laps.
 
-```text
-Point One GPS + RTK Corrections
-        ↓
-Vehicle Position
-        ↓
-Recorded GPS Waypoints
-        ↓
-Path and Heading Error
-        ↓
-PID Controller
-        ↓
-VESC Motor Controller
+```mermaid
+flowchart TD
+    A["Live GPS Position with RTK Corrections"] --> C["Compare Position with Recorded Path"]
+    B["Saved GPS Waypoints"] --> C
+    C --> D["Path Error"]
+    D --> E["PID Steering Controller"]
+    E --> F["VESC Interface"]
+    F --> G["Steering Servo"]
 ```
+
 ### GPS Waypoint Navigation Results
 
 **The car successfully completed three autonomous GPS-guided laps after resolving a hardware issue and tuning the steering controller and vehicle speed.**
@@ -105,7 +102,7 @@ The final system used ROS2 and computer vision to navigate a track while keeping
 
 Images from the OAK-D Lite were converted into HSV color space to isolate the yellow center markers. The detected marker position was used as a reference for determining the car’s location within the lane. Instead of driving directly over the yellow markers, the camera alignment and lane-position target were calibrated so the car remained on their right side.
 
-The difference between the car’s desired position and its detected position was converted into an error value. A PID controller used this error to continuously adjust the steering and throttle while keeping the car in the right-hand lane.
+The detected marker position was compared with a calibrated image reference to generate a lane-position error. A PID controller used this error to adjust steering, while throttle scheduling reduced speed as the error increased. The guidance node published commands through `/cmd_vel`, and the VESC interface controlled the drive motor and steering servo.
 
 ```text
 OAK-D Lite Camera
